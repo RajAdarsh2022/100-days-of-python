@@ -1,0 +1,1 @@
+This folder contains the python script written for the Hangman game.
