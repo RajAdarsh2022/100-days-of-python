@@ -27,17 +27,21 @@ while is_answer_correct:
     print(logo)
     if score != 0:
         print(f"You're right! Current Score: {score}")
+        choice_dict["A"] = choice_dict["B" ] 
+    else:
+        choice_dict["A" ] = random.choice(data)
 
-    #Will receive a random dictionary from data
-    choice_dict["A"] = random.choice(data)
+
     choice_dict["B" ] = random.choice(data)
+    while choice_dict["B"] == choice_dict["A"]:
+        choice_dict["B" ] = random.choice(data)
     
     provide_option("A", choice_dict["A"])
     print(vs)
     provide_option("B", choice_dict["B"])
     
     #Taking the answer from the user
-    user_guess = input("Who has more followers? Type 'A' or 'B':  ")
+    user_guess = input("Who has more followers? Type 'A' or 'B':  ").upper()
     if user_guess == "A":
         user_guess_followers = choice_dict["A"]['follower_count']
         opponent_followers = choice_dict["B"]['follower_count']
