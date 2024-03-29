@@ -1,0 +1,1 @@
+Basic turtle racing game which allows user to make a bet on a set of racing turles and see whether his/her turtle wins the race or not.
