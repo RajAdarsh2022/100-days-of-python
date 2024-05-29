@@ -4,9 +4,9 @@ This is a simple Pong game created using Python's Turtle Graphics module. The ga
 
 ## Features
 
-a. Classic Pong-game mechanics
-b. Simple and intuitive controls
-c. Score display for both players
+1. Classic Pong-game mechanics
+2. Simple and intuitive controls
+3. Score display for both players
 
 
 ## Gameplay
@@ -31,5 +31,5 @@ c. Score display for both players
 4. Enjoy the classic gaming experience!.
 
 ## Screenshots
-![Gameplay](pong.jpg)
+![pong](pong.jpg)
 
