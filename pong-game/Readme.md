@@ -31,5 +31,5 @@ This is a simple Pong game created using Python's Turtle Graphics module. The ga
 4. Enjoy the classic gaming experience!.
 
 ## Screenshots
-![gameplay](screenshots/pong.jpg)
+![gameplay](screenshots/Pong.jpg)
 
