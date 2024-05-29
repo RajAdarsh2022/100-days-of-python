@@ -9,7 +9,7 @@ screen = turtle.Screen()
 screen.bgcolor("black")
 screen.setup(width = WINDOW_WIDTH , height = WINDOW_HEIGHT)
 screen.title("Pong game")
-screen.tracer(0)
+# screen.tracer(0)
 screen.listen()
 
 
@@ -51,19 +51,19 @@ is_game_on = True
 while is_game_on:
     time.sleep(BALL_SPEED_FACTOR)
     ball.move()
-    screen.update()
-
+    # screen.update()
+    # print(ball.xcor())
 
     #Checking for the collision between paddle and ball
-    if abs(ball.xcor() - left_paddle.xcor()) < 5:
-        pass
-    if abs(ball.xcor() - right_paddle.xcor()) < 5:
-        pass
+    if abs(ball.xcor() - left_paddle.xcor()) < 5 and abs(ball.ycor() - left_paddle.ycor()) < 30:
+        ball.reverse()
+    if abs(ball.xcor() - right_paddle.xcor()) < 5 and abs(ball.ycor() - right_paddle.ycor()) < 30:
+        ball.reverse()
 
     #Checking for the collision between horizontal floor and wall
-    if ball.ycor() < -(WINDOW_HEIGHT / 2 + 10):
+    if ball.ycor() < -(WINDOW_HEIGHT / 2 - 10):
         #Do the bounce back logic
-        pass
+        ball.reflect()
 
     if(ball.xcor() >= WINDOW_WIDTH / 2 or ball.xcor() <= - WINDOW_WIDTH/2):
         is_game_on = False
