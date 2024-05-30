@@ -1,10 +1,10 @@
-import turtle
+from turtle import Turtle
 from constants import STARTING_POSITION_LEFT, STARTING_POSITION_RIGHT, PADDLE_MOVING_DISTANCE
 
 
 
 
-class Paddle(turtle.Turtle):
+class Paddle(Turtle):
 
     def __init__(self, direction):
         super().__init__()
@@ -20,19 +20,17 @@ class Paddle(turtle.Turtle):
         self.setheading(90)
         self.penup()
         self.shape("square")
-        self.shapesize(stretch_len=3, stretch_wid=1)
+        self.shapesize(stretch_len=5, stretch_wid=1)
         self.color("white")
         self.goto(starting_postion)
     
     def moveUp(self):
         """For moving the paddle upwards"""
-        print("Upwards!")
         self.forward(PADDLE_MOVING_DISTANCE)
 
 
     def moveDown(self):
         """For moving the paddle downwards"""
-        print("Downwards!")
         self.backward(PADDLE_MOVING_DISTANCE)
 
 
