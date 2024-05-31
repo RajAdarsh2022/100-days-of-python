@@ -1,7 +1,7 @@
 from turtle import Turtle
 STARTING_POSITION = (0, -280)
 MOVE_DISTANCE = 10
-FINISH_LINE_Y = 280
+FINISH_LINE_Y = 270
 
 
 
@@ -20,6 +20,19 @@ class Player(Turtle):
         curr_y = self.ycor()
         self.goto(curr_x , curr_y + MOVE_DISTANCE)
 
+    def moveDown(self):
+        """Makes the turtle go downwards"""
+        curr_x = self.xcor()
+        curr_y = self.ycor()
+        self.goto(curr_x , curr_y - MOVE_DISTANCE)
+    
+    def isAtFinishLine(self):
+        """Returs true if the player has reached the finished line, false otherwise"""
+        if self.ycor() > FINISH_LINE_Y:
+            return True
+        else:
+            return False
+        
     def reset(self):
         """Brings the turtle to the starting position"""
         self.goto(STARTING_POSITION)

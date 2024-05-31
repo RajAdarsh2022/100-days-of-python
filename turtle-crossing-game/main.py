@@ -11,10 +11,11 @@ screen.listen()
 
 player = Player()
 car_manager = CarManager()
-
+scoreboard = Scoreboard()
 
 #Adding event listeners
 screen.onkey(player.moveUp , "Up")
+screen.onkey(player.moveDown , "Down")
 
 game_is_on = True
 while game_is_on:
@@ -29,7 +30,12 @@ while game_is_on:
         if car.distance(player) < 20:
             game_is_on = False
 
+    #Detecting succesful crossing
+    if player.isAtFinishLine():
+        player.reset()
+        car_manager.increaseCarSpeed()
+        scoreboard.increaseLevel()
 
 
-
+scoreboard.gameOver()
 screen.exitonclick()
