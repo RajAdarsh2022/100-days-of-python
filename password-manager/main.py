@@ -2,9 +2,34 @@ import tkinter as tk
 from tkinter import messagebox
 from combinations import letters, numbers, symbols
 import random
+import json
 
 window = tk.Tk()
 window.title("Password Manager")
+
+def searchData():
+    """Searches the data for username and password for the given webite, returns error otherwise"""
+    website = website_entry.get()
+
+    #input validation
+    if len(website) == 0:
+        messagebox.showerror(title="Invalid input", message="Enter Website Name")
+        return  
+
+    try:  
+        with open("data.json", 'r') as f_ptr:
+            data = json.load(f_ptr)
+
+        if website in data.keys():
+            username = data[website]["username"]
+            password = data[website]["password"]
+            messagebox.showinfo(title="Login Credentials", message=f"Username: {username} \nPassword: {password}")
+        else:
+            messagebox.showerror(title="Not Present", message="The credential is absent")
+    except FileNotFoundError:
+        print("FileNotFound")
+        messagebox.showerror(title="Not Data", message="The database is empty")
+    
 
 
 def generatePassword():
@@ -41,8 +66,23 @@ def saveData():
 
     response = messagebox.askokcancel(title="Verify!", message=f"Below are the details you mentioned: \n Email: {username}\n Password: {password}\n Is it OK to contiue?")
     if response:
-        with open("data.txt", 'a') as f_ptr:
-            f_ptr.write(f"{website}, {username}, {password}\n")
+        new_data = {
+            website : {
+                "username" : username,
+                "password" : password,
+            }
+        }
+        try:
+            with open("data.json", 'r') as f_ptr:
+                data = json.load(f_ptr)
+            data.update(new_data)
+            print(data)
+        except FileNotFoundError:
+            print("File not found error")
+            data = new_data
+        finally:
+            with open("data.json", 'w') as f_ptr:
+                json.dump(data, f_ptr, indent=True)
         
     website_entry.delete(0, tk.END)
     username_entry.delete(0, tk.END)
@@ -64,8 +104,10 @@ logo = tk.PhotoImage(file='images/logo.png')
 canvas.create_image(100, 100, image=logo)
 
 website_label = tk.Label(window , text= "Website:")
-website_entry = tk.Entry(window, width=35)
+website_entry = tk.Entry(window, width=21)
 website_entry.focus()
+
+search_button = tk.Button(window, text="Search", command=searchData)
 
 username_label = tk.Label(window, text="Email/Username:")
 username_entry = tk.Entry(window, width=35)
@@ -80,7 +122,8 @@ add_to_file_button = tk.Button(window, text="Add", width=36, command=saveData)
 #putting widgets on the window
 canvas.grid(row=0, column=1)
 website_label.grid(row=1, column=0, sticky='e')
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry.grid(row=1, column=1)
+search_button.grid(row=1, column=2)
 username_label.grid(row=2, column=0, sticky='e')
 username_entry.grid(row=2, column=1, columnspan=2)
 password_label.grid(row=3, column=0, sticky='e')
