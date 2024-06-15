@@ -1,0 +1,2 @@
+An automated birthday-wisher for sending birthday-wishes via email. A simple program to undertand the basics
+of SMTP, how python can be used to send emails, date-time, file-manipulation and mail-merge.
