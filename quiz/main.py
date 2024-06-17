@@ -1,14 +1,17 @@
 from question_model import Question
 from data import question_data
 from quiz_brain import QuizBrain
+from ui import QuizInterface
+
+
 
 question_bank = []
-for _ in question_data:
-    q_text = _["question"]
-    q_answer = _["correct_answer"]
-    question_bank.append(Question(q_text , q_answer))
+for question in question_data:
+    question_text = question["question"]
+    question_answer = question["correct_answer"]
+    new_question = Question(question_text, question_answer)
+    question_bank.append(new_question)
 
-# print(len(question_bank))
-# print(question_bank)
-quiz = QuizBrain(question_bank)
-quiz.play_quiz()
+
+quiz_brain = QuizBrain(question_bank)
+quiz_ui = QuizInterface(quiz_brain)

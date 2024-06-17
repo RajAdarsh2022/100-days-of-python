@@ -1,31 +1,33 @@
-class QuizBrain():
-    def __init__(self, question_set):
-        self.question_set = question_set
-        self.current_question_index = 0
-        self.score = 0
+import html
 
+class QuizBrain:
+
+    def __init__(self, q_list):
+        self.question_number = 0
+        self.score = 0
+        self.question_list = q_list
+        self.current_question = None
+
+    def still_has_questions(self):
+        return self.question_number < len(self.question_list)
     
-    def ask_current_question(self):
-        current_question = self.question_set[self.current_question_index]
-        self.current_question_index += 1
-        question_text = current_question.text
-        question_answer = current_question.answer
-        user_res = input(f"Q. {self.current_question_index}: {question_text}? (True/False) : ")
-        return [user_res , question_answer]
-    
-    def check_answer(self, user_answer, correct_answer):
+    def ask_question(self):
+        self.current_question = self.question_list[self.question_number]
+        q_text = html.unescape(self.current_question.text)
+        self.question_number += 1
+        return q_text
+
+
+
+    def check_answer(self, user_answer):
+        correct_answer = self.current_question.answer
         if user_answer.lower() == correct_answer.lower():
             self.score += 1
-            print("You got it right!")
+            return True
         else:
-            print("You got it wrong!")
+            return False
 
 
-    
-    def play_quiz(self):
-        for _ in range(len(self.question_set)):
-            response = self.ask_current_question()
-            self.check_answer(response[0], response[1])
-            print(f"Your current score is {self.score}/{self.current_question_index}")
-        print("You have completed the quiz!")
-        print(f"Your final score is {self.score}/{self.current_question_index}")
+        print(f"Your current score is: {self.score}/{self.question_number}")
+        print("\n")
+
