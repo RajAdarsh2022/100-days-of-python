@@ -3,9 +3,11 @@
 import requests
 import dotenv
 import os
+import datetime
 
 from data_manager import DataManager
 from flight_search import FlightSearch
+from flight_data import FlightData
 
 
 data_manager = DataManager()
@@ -13,43 +15,39 @@ flight_search = FlightSearch()
 
 
 
+
 dotenv.load_dotenv()
 
-amadeus_api_key = os.getenv('AMADEUS_API_KEY')
-amadeus_api_secret = os.getenv('AMADEUS_API_SECRET')
-amadeus_iata_code_access_token = os.getenv('AMADEUS_IATA_CODE_ACCESS_TOKEN')
+def create_target_locations_list():
 
-iata_code_access_base_url = os.getenv('IATA_CODE_ACCESS_BASE_URL')
+    sheet_data = data_manager.fetch_data()
+    target_locations = sheet_data['prices']
+    target_location_list = []
+    for location in target_locations:
+        city = location['city']
+        city_iata_code = location['iataCode']
+        allowable_price = location['lowestPrice']
 
-
-json_data = data_manager.fetch_data()
-row_list = json_data['prices']
-for row in row_list:
-    print(row)
-    city_name = row['city']
-    lowest_price = row['lowestPrice']
-    id = row['id']
-
-    #getting the IATA code from Amadeus city-search API
-    url = f"{iata_code_access_base_url}?keyword={city_name.upper()}"
-    header = {
-        "Authorization" : f"Bearer {amadeus_iata_code_access_token}"
-    }
-    iata_response = requests.get(url=url, headers=header)
-    iata_response.raise_for_status()
-    iata_response_json = iata_response.json()
-    iata_code = iata_response_json['data'][0]['iataCode']
-    print(iata_code)
+        location_data = FlightData('LON', city_iata_code, 1, allowable_price)
+        target_location_list.append(location_data)
+    return target_location_list
 
 
-    json_payload = {
-        'price' :  {
-            'city' : city_name,
-            'iataCode' : iata_code,
-            'lowestPrice' : lowest_price,
-        }
-    }
-    data_manager.update_data(id, json_payload)
+target_location = create_target_locations_list()
+start = input("Enter the search start date(in yyyy-mm-dd) :")
+end = input("Enter the search start date(in yyyy-mm-dd) :")
+
+start_list = start.split('-')
+start_date = datetime.datetime(int(start_list[0]), int(start_list[1]), int(start_list[2]))
+print(type(start_date))
+print(start_date)
+
+
+
+
+
+
+
 
 
 
