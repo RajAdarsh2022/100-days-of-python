@@ -1,0 +1,1 @@
+A program which finds the cheapest flight fares from source to destination over a given period of duration by using Amadeus developer API.

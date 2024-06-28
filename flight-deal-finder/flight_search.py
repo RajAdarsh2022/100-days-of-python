@@ -68,8 +68,12 @@ class FlightSearch:
         for fare in fare_data:
             fare_price.append(float(fare['price']['grandTotal']))
         
-        minimum_fare = min(fare_price)
-        print(f"Minimum fare from {journey.origin_location_code} to {journey.destination_location_code} is : {minimum_fare}")
+        if len(fare_price) > 0:
+            minimum_fare = min(fare_price)
+            return minimum_fare
+        else:
+            return 100000
+        # print(f"Minimum fare from {journey.origin_location_code} to {journey.destination_location_code} is : {minimum_fare}")
         
 
 

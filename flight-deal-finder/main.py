@@ -32,15 +32,32 @@ def create_target_locations_list():
         target_location_list.append(location_data)
     return target_location_list
 
+def find_minimum_fare_over_duration(location , start_date, end_date):
+
+        current_date = start_date
+        fare_prices_list = []
+        while current_date <= end_date:
+
+            fare_prices_list.append(flight_search.get_minimum_fare(location, current_date.strftime("%Y-%m-%d")))
+            current_date += datetime.timedelta(days=1)
+        print(fare_prices_list)
+        # minimum_fare_price = min(fare_prices_list)
+        # print(f"Minimum price fare for {location.origin_location_code} to {location.destination_location_code} is : {minimum_fare_price}")
+
 
 target_location = create_target_locations_list()
+
 start = input("Enter the search start date(in yyyy-mm-dd) :")
 end = input("Enter the search start date(in yyyy-mm-dd) :")
+start_date = datetime.datetime.strptime(start, "%Y-%m-%d")
+end_date = datetime.datetime.strptime(end, "%Y-%m-%d")
 
-start_list = start.split('-')
-start_date = datetime.datetime(int(start_list[0]), int(start_list[1]), int(start_list[2]))
-print(type(start_date))
-print(start_date)
+
+for location in target_location:
+    print(f"For {location.origin_location_code} to {location.destination_location_code}")
+    find_minimum_fare_over_duration(location, start_date, end_date)
+
+
 
 
 
