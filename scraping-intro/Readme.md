@@ -1,0 +1,1 @@
+A program which tells us the news article with maximum upvote on the y-combinator hacker news and directs you to the link.
