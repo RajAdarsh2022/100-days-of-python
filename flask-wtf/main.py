@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask_bootstrap import Bootstrap5
 from form import LoginForm
 from dotenv import load_dotenv
 import os
@@ -8,6 +9,9 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+bootstrap = Bootstrap5(app)
+
+
 
 @app.route("/")
 def home():
