@@ -17,8 +17,12 @@
         <tbody>
           {% for row in cafes[1:] %}
             <tr>
-              {% for cell in row %}
-                <td>{{ cell }}</td>
+              {% for index in range(num_columns) %}
+                {% if index == 1: %}
+                  <td><a href="{{ row[index] }}", target="_blank">Maps Link</a></td>
+                {% else: %}
+                  <td>{{ row[index] }}</td>
+                {% endif %}
               {% endfor %}
             </tr>
           {% endfor %}

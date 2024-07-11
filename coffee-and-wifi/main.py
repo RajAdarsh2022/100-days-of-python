@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap5
 from form import CafeForm
 import csv
@@ -14,31 +14,25 @@ Bootstrap5(app)
 
 
 
-
-# Exercise:
-# add: Location URL, open time, closing time, coffee rating, wifi rating, power outlet rating fields
-# make coffee/wifi/power a select element with choice of 0 to 5.
-#e.g. You could use emojis ☕️/💪/✘/🔌
-# make all fields required except submit
-# use a validator to check that the URL field has a URL entered.
-# ---------------------------------------------------------------------------
-
-
 # all Flask routes below
 @app.route("/")
 def home():
     return render_template("index.html")
 
 
-@app.route('/add')
+@app.route('/add', methods=['GET', 'POST'])
 def add_cafe():
     form = CafeForm()
     if form.validate_on_submit():
-        print("True")
+        
+        form_data = form.data
+        new_data = [value for key, value in form_data.items() if key != 'submit' and key != 'csrf_token']
 
-    # Exercise:
-    # Make the form write a new row into cafe-data.csv
-    # with   if form.validate_on_submit()
+        with open('cafe-data.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(new_data)
+        return redirect(url_for('cafes'))
+
     return render_template('add.html', form=form)
 
 
@@ -49,7 +43,8 @@ def cafes():
         list_of_rows = []
         for row in csv_data:
             list_of_rows.append(row)
-    return render_template('cafes.html', cafes=list_of_rows)
+        num_columns = len(list_of_rows[0])
+    return render_template('cafes.html', cafes=list_of_rows, num_columns=num_columns)
 
 
 if __name__ == '__main__':
