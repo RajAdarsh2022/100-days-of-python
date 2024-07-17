@@ -41,16 +41,21 @@ def register():
         email = request.form.get("email")
         password = generate_password_hash(password=request.form.get("password"), method="pbkdf2:sha256", salt_length=8)
 
-        new_user = User(
-            email=email,
-            name=name,
-            password=password
-            
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        login_user(new_user)
-        return redirect(url_for('secrets', name=name))
+        try:
+            user = db.session.execute(db.select(User).where(User.email==email)).scalar()
+            flash("You are already signed up with that email, login instead!")
+            return redirect(url_for('login'))
+        except:
+            new_user = User(
+                email=email,
+                name=name,
+                password=password
+                
+            )
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user)
+            return redirect(url_for('secrets', name=name))
     return render_template("register.html")
 
 
@@ -68,12 +73,14 @@ def login():
                 return redirect(url_for('secrets'))
             else:
                 print(f"Password for the {user.email} does not match.")
-                return f"Invalid Password for {user.email}"
+                flash(message="The password does't match." , category="error")
+                return redirect(url_for('login'))
                 
 
         except Exception as e:
             print(f"User with {email} doesn't exist.")
-            return "Invalid Username"
+            flash(message="The email does't exist." , category="error")
+            return redirect(url_for('login'))
         
     return render_template("login.html")
 
@@ -86,6 +93,7 @@ def secrets():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
